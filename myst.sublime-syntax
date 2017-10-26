@@ -1,0 +1,46 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: Myst
+comment: Sublime Syntax highlighting for the Myst programming language.
+file_extensions:
+  - mt
+first_line_match: ^#!/.*\bmyst
+scope: source.myst
+contexts:
+  main:
+    - match: \#.*
+      scope: comment.line.number-sign
+    - match: \b(def|defstatic)\W([a-z][_a-zA-Z0-9]*)
+      captures:
+        1: keyword.control.myst
+        2: entity.name.function.public.myst
+      push:
+        - meta_scope: meta.function.body.myst
+        - match: $
+          pop: true
+        - match: '&[a-z][_a-zA-Z0-9]*\b'
+          scope: variable.parameter.function.block.myst
+        - match: \b[a-z][_a-zA-Z0-9]*\b
+          scope: variable.parameter.function.myst
+        - match: ':'
+          scope: keyword.operator.other.myst
+        - match: ([A-Z][_a-zA-Z0-9]*)
+          scope: entity.name.class.myst
+    - match: '(?<!\.)\b(do|end|defmodule|def|defstatic|require)\b(?![?!:])'
+      scope: keyword.control.elixir
+    - match: ^\s*(deftype)\W([A-Z][_a-zA-Z0-9]*)
+      captures:
+        1: keyword.control.type.myst
+        # Both `type` and `class` are added so that Sublime sees type
+        # definitions in the symbol list, but themes also decide to highlight
+        # the constant properly.
+        2: entity.name.type.myst entity.name.class.myst
+      push:
+        - meta_scope: meta.type.identifier.myst
+        - match: $
+          captures:
+            1: keyword.control.module.myst
+          pop: true
+        - match: \b[A-Z]\w*\b
+          scope: entity.name.class.myst
