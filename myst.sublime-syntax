@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: Myst (Local)
+name: Myst
 comment: Sublime Syntax highlighting for the Myst programming language.
 file_extensions:
   - mt
