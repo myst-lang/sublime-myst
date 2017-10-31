@@ -1,35 +1,88 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: Myst
+name: Myst (Local)
 comment: Sublime Syntax highlighting for the Myst programming language.
 file_extensions:
   - mt
 first_line_match: ^#!/.*\bmyst
 scope: source.myst
+variables:
+  def_op: '\+|\-|\*|\/|\%|\[\]=?|==|!='
 contexts:
   main:
     - match: \#.*
       scope: comment.line.number-sign
-    - match: \b(def|defstatic)\W([a-z][_a-zA-Z0-9]*)
+    - match: '(?<!\.)\b(do|end|defmodule|ensure)\b(?![?!:])'
+      scope: keyword.control.myst
+    - match: '(?<!\.)\b(rescue)\b(?![?!:])'
+      scope: keyword.control.myst
+      push:
+        - include: parameter
+        - match: $
+          pop: true
+    - match: '(?<!\.)\b(when|unless|else)\b'
+      scope: keyword.conditional.myst
+    - match: '(?<!\.)\b(while|until)\b'
+      scope: keyword.loop.myst
+    - match: \b(require|include|raise)\b
+      scope: keyword.import.myst
+    - match: \b(break|return|next)\b
+      scope: keyword.control.flow.myst
+    - match: '(\%)([A-Z][_a-z0-9]*)'
+      captures:
+        1: punctuation.definition.arguments.type.myst
+        2: variable.type.parameter.myst
+    - match: (<=?|==|!=|>=?)
+      scope: keyword.operator.comparison.myst
+    - match: '(\+|\-|\*|\/|\%)'
+      scope: keyword.operator.arithmetic.myst
+    - match: '(\|\|=|\&\&=|\+=|\-=|\*=|\/=)'
+      scope: keyword.operator.assignement.augmented.myst
+    - match: '(=:?)'
+      scope: keyword.operator.assignement.myst
+    - match: '(\|\||&&)'
+      scope: keyword.operator.logical.myst
+    - match: '\.\b'
+      scope: puncuation.accessor.myst
+    - match: '[0-9][_0-9]*\.[0-9][_0-9]*'
+      scope: constant.numeric.float.myst
+    - match: '[0-9][_0-9]*'
+      scope: constant.numeric.integer.myst
+    - match: true|false|nil
+      scope: constant.language.myst
+    - match: '\:[a-zA-Z0-9]+'
+      scope: constant.other.symbol.myst
+    - match: '(")[^"]*(")'
+      scope: string.quoted.double.myst
+      captures:
+        1: punctuation.string.begin
+        2: punctuation.string.end
+    - match: self
+      scope: variable.language.myst
+    - match: '(@)([_a-z][_a-zA-Z0-9]*)'
+      captures:
+        1: punctuation.definition.variable.myst
+        2: variable.other.instance.myst
+    - match: \b_[a-z][_a-zA-Z0-9]*\b
+      scope: variable.other.ignored.myst
+    - match: \b(def|defstatic)\W([a-z][_a-zA-Z0-9]*|{{def_op}})(\()?
+      scope: meta.function.identifier.myst
       captures:
         1: keyword.control.myst
         2: entity.name.function.public.myst
+        3: punctuation.definition.parameters.begin.myst
       push:
+        - include: parameter
         - meta_scope: meta.function.body.myst
         - match: $
           pop: true
-        - match: '&[a-z][_a-zA-Z0-9]*\b'
-          scope: variable.parameter.function.block.myst
-        - match: \b[a-z][_a-zA-Z0-9]*\b
-          scope: variable.parameter.function.myst
-        - match: ':'
-          scope: keyword.operator.other.myst
-        - match: ([A-Z][_a-zA-Z0-9]*)
-          scope: entity.name.class.myst
-    - match: '(?<!\.)\b(do|end|defmodule|def|defstatic|require)\b(?![?!:])'
-      scope: keyword.control.elixir
-    - match: ^\s*(deftype)\W([A-Z][_a-zA-Z0-9]*)
+        - match: ','
+          scope: punctuation.separator.parameter.myst
+        - match: \)$
+          scope: punctuation.definition.parameters.end.myst
+          pop: true
+    - match: ^\s*(deftype|defmodule)\W([A-Z][_a-zA-Z0-9]*)
       captures:
         1: keyword.control.type.myst
         # Both `type` and `class` are added so that Sublime sees type
@@ -44,3 +97,38 @@ contexts:
           pop: true
         - match: \b[A-Z]\w*\b
           scope: entity.name.class.myst
+
+  parameter:
+    - match: '(&)[a-z][_a-zA-Z0-9]*\b'
+      scope: variable.parameter.function.block.myst
+      captures:
+        1: punctuation.definition.parameter.type
+    - match: '(\*)[a-z][_a-zA-Z0-9]*\b'
+      scope: variable.parameter.function.block.myst
+      captures:
+        1: punctuation.definition.parameter.type
+    - match: '(\%)([A-Z][_a-z0-9]*)'
+      captures:
+        1: punctuation.definition.arguments.type.myst
+        2: variable.type.parameter.myst
+    - match: \b[a-z][_a-zA-Z0-9]*\b
+      scope: variable.parameter.function.myst
+    - match: \b_[a-z][_a-zA-Z0-9]*\b
+      scope: variable.parameter.function.ignored.myst
+    - match: ':'
+      scope: punctuation.definition.parameters.type.myst
+    - match: '(=:?)'
+      scope: keyword.operator.assignement.myst
+    - match: '<'
+      scope: punctuation.definition.expression.myst.begin
+      push: interpolation
+    - match: '>'
+      scope: punctuation.definition.expression.myst.end
+    - match: ([A-Z][_a-zA-Z0-9]*)
+      scope: entity.name.class.myst
+
+  interpolation:
+    - include: main
+    - match: '>'
+      scope: punctuation.definition.expression.myst.end
+      pop: true
