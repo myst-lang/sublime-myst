@@ -13,20 +13,20 @@ contexts:
   main:
     - match: \#.*
       scope: comment.line.number-sign
-    - match: '(?<!\.)\b(end|defmodule|ensure)\b(?![?!:])'
+    - match: '\b(end|ensure)\b'
       scope: keyword.control.myst
-    - match: '(?<!\.)\b(do)'
+    - match: '\b(do)\b'
       scope: keyword.control.myst
       push: block
-    - match: '(?<!\.)\b(rescue)\b(?![?!:])'
+    - match: '\b(rescue)\b'
       scope: keyword.control.myst
       push:
         - include: parameter
         - match: $
           pop: true
-    - match: '(?<!\.)\b(when|unless|else)\b'
+    - match: '\b(when|unless|else)\b'
       scope: keyword.conditional.myst
-    - match: '(?<!\.)\b(while|until)\b'
+    - match: '\b(while|until)\b'
       scope: keyword.loop.myst
     - match: \b(require|include|raise)\b
       scope: keyword.import.myst
