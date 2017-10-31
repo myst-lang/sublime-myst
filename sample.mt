@@ -4,7 +4,7 @@ require "stdlib/enumerable.mt"
 deftype Person
   # Create a new Person with the same birthday and age as
   # the given Person.
-  defstatic create_twin(p : Person, name : String)
+  defstatic create_twin([1, 2] =: p : Person, name : String)
     %Person{name, p.birthday, p.age}
   end
 
@@ -13,10 +13,12 @@ deftype Person
   end
 
   def name_parts(thing, _ignored, &block)
-    name.each do |c|
+    name.each do |_first, *rest, _last|
       block(c)
     end
   end
+
+  include Thing.Methods
 
   def foo()
     raise "woops"

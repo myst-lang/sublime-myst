@@ -13,8 +13,11 @@ contexts:
   main:
     - match: \#.*
       scope: comment.line.number-sign
-    - match: '(?<!\.)\b(do|end|defmodule|ensure)\b(?![?!:])'
+    - match: '(?<!\.)\b(end|defmodule|ensure)\b(?![?!:])'
       scope: keyword.control.myst
+    - match: '(?<!\.)\b(do)'
+      scope: keyword.control.myst
+      push: block
     - match: '(?<!\.)\b(rescue)\b(?![?!:])'
       scope: keyword.control.myst
       push:
@@ -66,6 +69,8 @@ contexts:
         2: variable.other.instance.myst
     - match: \b_[a-z][_a-zA-Z0-9]*\b
       scope: variable.other.ignored.myst
+    - match: \b[A-Z][_a-zA-Z0-9]*\b
+      scope: variable.other.myst
     - match: \b(def|defstatic)\W([a-z][_a-zA-Z0-9]*|{{def_op}})(\()?
       scope: meta.function.identifier.myst
       captures:
@@ -120,15 +125,30 @@ contexts:
     - match: '(=:?)'
       scope: keyword.operator.assignement.myst
     - match: '<'
-      scope: punctuation.definition.expression.myst.begin
+      scope: punctuation.definition.expression.begin.myst
       push: interpolation
     - match: '>'
-      scope: punctuation.definition.expression.myst.end
+      scope: punctuation.definition.expression.end.myst
     - match: ([A-Z][_a-zA-Z0-9]*)
       scope: entity.name.class.myst
 
   interpolation:
     - include: main
     - match: '>'
-      scope: punctuation.definition.expression.myst.end
+      scope: punctuation.definition.expression.end.myst
+      pop: true
+
+  block:
+    - include: main
+    - match: \|
+      scope: punctuation.definition.parameters.begin.myst
+      push: block_parameters
+    - match: end
+      scope: keyword.control.myst
+      pop: true
+
+  block_parameters:
+    - include: parameter
+    - match: \|
+      scope: punctuation.definition.parameters.myst
       pop: true
