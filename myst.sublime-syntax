@@ -67,7 +67,7 @@ contexts:
       captures:
         1: punctuation.definition.variable.myst
         2: variable.other.instance.myst
-    - match: \b_[a-z][_a-zA-Z0-9]*\b
+    - match: \b_[_a-zA-Z0-9]*\b
       scope: variable.other.ignored.myst
     - match: \b[A-Z][_a-zA-Z0-9]*\b
       scope: variable.other.myst
@@ -118,7 +118,7 @@ contexts:
         2: variable.type.parameter.myst
     - match: \b[a-z][_a-zA-Z0-9]*\b
       scope: variable.parameter.function.myst
-    - match: \b_[a-z][_a-zA-Z0-9]*\b
+    - match: \b_[_a-zA-Z0-9]*\b
       scope: variable.parameter.function.ignored.myst
     - match: ':'
       scope: punctuation.definition.parameters.type.myst
