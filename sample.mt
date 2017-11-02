@@ -23,21 +23,21 @@ deftype Person
   def foo()
     raise "woops"
   rescue msg : String
-    while msg.size <= 10.0_000_000
+    while msg.size <= 10_000_000
       IO.puts(:hi)
-      break 1 + 2
-      self
+      break 100 + 2.345_678
+      self.eat
       _thing
     end
 
-    when [a,b] =: [1,2]
+    when [a, b] =: [123, 2_456]
       IO.puts("hi")
     else
       false
     end
 
     a ||= 2
-  rescue [1,2] =: err : String
+  rescue [1, 2] =: err : String
     _something_else
   rescue
     IO.puts(:catch_all)
@@ -47,6 +47,6 @@ deftype Person
 
 
   def matched(%Thing{name}, [a,b] =: foo, <(a + b)>)
-    foo.map{ |a| a * 2 }
+    foo.map{ |_a, &block| a * 2.34 }
   end
 end
