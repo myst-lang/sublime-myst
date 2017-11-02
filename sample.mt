@@ -46,7 +46,7 @@ deftype Person
   end
 
 
-  def matched(%Thing{name}, [a,b] =: foo, <a + b>)
+  def matched(%Thing{name}, [a,b] =: foo, <(a + b)>)
     foo.map{ |a| a * 2 }
   end
 end

@@ -124,11 +124,6 @@ contexts:
       scope: punctuation.definition.parameters.type.myst
     - match: '(=:?)'
       scope: keyword.operator.assignment.myst
-    - match: '<'
-      scope: punctuation.definition.expression.begin.myst
-      push: interpolation
-    - match: '>'
-      scope: punctuation.definition.expression.end.myst
     - match: ([A-Z][_a-zA-Z0-9]*)
       scope: entity.name.class.myst
 
@@ -175,12 +170,6 @@ contexts:
       scope: keyword.loop.end.myst
       pop: true
     - include: main
-
-  interpolation:
-    - include: main
-    - match: '>'
-      scope: punctuation.definition.expression.end.myst
-      pop: true
 
   block:
     - include: main
