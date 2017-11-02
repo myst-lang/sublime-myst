@@ -31,11 +31,16 @@ deftype Person
     end
 
     when [a,b] =: [1,2]
+      IO.puts("hi")
     else
       false
     end
 
     a ||= 2
+  rescue [1,2] =: err : String
+    _something_else
+  rescue
+    IO.puts(:catch_all)
   ensure
     false
   end

@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: Myst
+name: Myst (Local)
 comment: Sublime Syntax highlighting for the Myst programming language.
 file_extensions:
   - mt
@@ -11,25 +11,26 @@ variables:
   def_op: '\+|\-|\*|\/|\%|\[\]=?|==|!='
 contexts:
   main:
-    - match: \#.*
-      scope: comment.line.number-sign
-    - match: '\b(end|ensure)\b'
+    - include: comments
+    - match: '\b(end)\b'
       scope: keyword.control.myst
     - match: '\b(do)\b'
       scope: keyword.control.myst
       push: block
     - match: '\b(rescue)\b'
-      scope: keyword.control.myst
-      push:
-        - include: parameter
-        - match: $
-          pop: true
+      scope: keyword.control.exceptions.myst
+      push: rescue
+    - match: '\b(ensure)\b'
+      scope: keyword.control.exceptions.myst
+      push: exception_handler
     - match: '\b(when|unless|else)\b'
       scope: keyword.conditional.myst
+      push: conditional
     - match: '\b(while|until)\b'
       scope: keyword.loop.myst
+      push: loop
     - match: \b(require|include|raise)\b
-      scope: keyword.import.myst
+      scope: keyword.control.import.myst
     - match: \b(break|return|next)\b
       scope: keyword.control.flow.myst
     - match: '(\%)([A-Z][_a-z0-9]*)'
@@ -41,9 +42,9 @@ contexts:
     - match: '(\+|\-|\*|\/|\%)'
       scope: keyword.operator.arithmetic.myst
     - match: '(\|\|=|\&\&=|\+=|\-=|\*=|\/=)'
-      scope: keyword.operator.assignement.augmented.myst
+      scope: keyword.operator.assignment.augmented.myst
     - match: '(=:?)'
-      scope: keyword.operator.assignement.myst
+      scope: keyword.operator.assignment.myst
     - match: '(\|\||&&)'
       scope: keyword.operator.logical.myst
     - match: '\.\b'
@@ -54,7 +55,7 @@ contexts:
       scope: constant.numeric.integer.myst
     - match: true|false|nil
       scope: constant.language.myst
-    - match: '\:[a-zA-Z0-9]+'
+    - match: '\:[_a-zA-Z0-9]+'
       scope: constant.other.symbol.myst
     - match: '(")[^"]*(")'
       scope: string.quoted.double.myst
@@ -93,12 +94,11 @@ contexts:
         # Both `type` and `class` are added so that Sublime sees type
         # definitions in the symbol list, but themes also decide to highlight
         # the constant properly.
-        2: entity.name.type.myst entity.name.class.myst
+        2: meta.type.identifier.myst entity.name.type.myst entity.name.class.myst
       push:
-        - meta_scope: meta.type.identifier.myst
-        - match: $
-          captures:
-            1: keyword.control.module.myst
+        - meta_scope: meta.type.body.myst
+        - include: main
+        - match: \bend\b
           pop: true
         - match: \b[A-Z]\w*\b
           scope: entity.name.class.myst
@@ -123,7 +123,7 @@ contexts:
     - match: ':'
       scope: punctuation.definition.parameters.type.myst
     - match: '(=:?)'
-      scope: keyword.operator.assignement.myst
+      scope: keyword.operator.assignment.myst
     - match: '<'
       scope: punctuation.definition.expression.begin.myst
       push: interpolation
@@ -131,6 +131,50 @@ contexts:
       scope: punctuation.definition.expression.end.myst
     - match: ([A-Z][_a-zA-Z0-9]*)
       scope: entity.name.class.myst
+
+  inline_parameter:
+    - match: $
+      pop: true
+    - include: parameter
+
+  comments:
+    - match: \#.*
+      scope: comment.line.number-sign
+
+  conditional:
+    - match: \b(when|unless|else)\b
+      scope: keyword.conditional.myst
+    - match: \b(end)\b
+      scope: keyword.conditional.end.myst
+      pop: true
+    - include: main
+
+  exception_handler:
+    - match: \b(rescue)\b
+      scope: keyword.control.exceptions.myst
+      set: rescue
+    - match: \b(ensure)\b
+      scope: keyword.control.exceptions.myst
+    - match: \b(end)\b
+      scope: keyword.control.exceptions.end.myst
+      pop: true
+    - include: main
+
+  # Rescues may have a single parameter given inline. Ensures do not allow
+  # parameters. To accomodate this, `rescue` is handled separately from
+  # other exception handlers _until the line with the `rescue` ends_. After
+  # that point, it is treated like a normal exception handler.
+  rescue:
+    - include: parameter
+    - match: $
+      set: exception_handler
+    - include: main
+
+  loop:
+    - match: \b(end)\b
+      scope: keyword.loop.end.myst
+      pop: true
+    - include: main
 
   interpolation:
     - include: main
