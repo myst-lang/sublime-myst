@@ -21,7 +21,7 @@ deftype Person
   include Thing.Methods
 
   def foo()
-    raise "woops"
+    raise "woops\nit broke"
   rescue msg : String
     while msg.size <= 10_000_000
       IO.puts(:hi)

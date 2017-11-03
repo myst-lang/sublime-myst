@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: Myst (Local)
+name: Myst
 comment: Sublime Syntax highlighting for the Myst programming language.
 file_extensions:
   - mt
@@ -57,11 +57,14 @@ contexts:
       scope: constant.language.myst
     - match: '\:[_a-zA-Z0-9]+'
       scope: constant.other.symbol.myst
-    - match: '(")[^"]*(")'
-      scope: string.quoted.double.myst
-      captures:
-        1: punctuation.string.begin
-        2: punctuation.string.end
+    - match: \"
+      scope: punctuation.definition.string.begin.myst
+      push:
+        - meta_scope: string.quoted.double.myst
+        - match: \"
+          scope: punctuation.definition.string.end.myst
+          pop: true
+        - include: interpolated_string
     - match: self
       scope: variable.language.myst
     - match: '(@)([_a-z][_a-zA-Z0-9]*)'
@@ -172,16 +175,35 @@ contexts:
     - include: main
 
   block:
-    - include: main
     - match: \|
       scope: punctuation.definition.parameters.begin.myst
       push: block_parameters
     - match: end
       scope: keyword.control.myst
       pop: true
+    - include: main
 
   block_parameters:
     - include: parameter
     - match: \|
       scope: punctuation.definition.parameters.myst
       pop: true
+
+  string:
+    - match: \\t
+      scope: constant.character.escape.tab.myst
+    - match: \\n
+      scope: constant.character.escape.newline.myst
+    - match: \\r
+      scope: constant.character.escape.return.myst
+    - match: \\0
+      scope: constant.character.escape.null.myst
+    - match: \\\\
+      scope: constant.character.escape.backslash.myst
+
+  interpolated_string:
+    - meta_scope: string.quoted.double.myst
+    - match: \"
+      scope: punctuation.definition.string.end.myst
+      pop: true
+    - include: string
