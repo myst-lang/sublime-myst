@@ -33,7 +33,7 @@ contexts:
       scope: keyword.control.import.myst
     - match: \b(break|return|next)\b
       scope: keyword.control.flow.myst
-    - match: '(\%)([A-Z][_a-z0-9]*)'
+    - match: '(\%)([A-Z][_a-zA-Z0-9]*)'
       captures:
         1: punctuation.definition.arguments.type.myst
         2: variable.type.parameter.myst
