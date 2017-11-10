@@ -84,6 +84,8 @@ contexts:
       push:
         - include: parameter
         - meta_scope: meta.function.body.myst
+        - match: ;
+          pop: true
         - match: $
           pop: true
         - match: ','
