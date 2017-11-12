@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: Myst
+name: Myst (Local2)
 comment: Sublime Syntax highlighting for the Myst programming language.
 file_extensions:
   - mt
@@ -59,12 +59,7 @@ contexts:
       scope: constant.other.symbol.myst
     - match: \"
       scope: punctuation.definition.string.begin.myst
-      push:
-        - meta_scope: string.quoted.double.myst
-        - match: \"
-          scope: punctuation.definition.string.end.myst
-          pop: true
-        - include: interpolated_string
+      push: string
     - match: self
       scope: variable.language.myst
     - match: '(@)([_a-z][_a-zA-Z0-9]*)'
@@ -192,6 +187,7 @@ contexts:
       pop: true
 
   string:
+    - meta_scope: string.quoted.double.myst
     - match: \\t
       scope: constant.character.escape.tab.myst
     - match: \\n
@@ -202,10 +198,15 @@ contexts:
       scope: constant.character.escape.null.myst
     - match: \\\\
       scope: constant.character.escape.backslash.myst
-
-  interpolated_string:
-    - meta_scope: string.quoted.double.myst
     - match: \"
-      scope: punctuation.definition.string.end.myst
       pop: true
-    - include: string
+    - match: \<\(
+      scope: punctuation.section.embedded.begin.myst
+      push: interpolation
+
+  interpolation:
+    - meta_scope: source.myst.embedded.source
+    - include: main
+    - match: \)\>
+      scope: punctuation.section.embedded.end.myst
+      pop: true

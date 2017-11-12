@@ -9,7 +9,7 @@ deftype Person
   end
 
   def greeting
-    "Hello, " + @name
+    "Hello, <(@name + 2_345.50)>"
   end
 
   def name_parts(thing, _ignored, &block)
