@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: Myst (Local2)
+name: Myst
 comment: Sublime Syntax highlighting for the Myst programming language.
 file_extensions:
   - mt
@@ -73,7 +73,7 @@ contexts:
     - match: \b(def|defstatic)\W([a-z][_a-zA-Z0-9]*|{{def_op}})(\()?
       scope: meta.function.identifier.myst
       captures:
-        1: keyword.control.myst
+        1: keyword.control.function.myst
         2: entity.name.function.public.myst
         3: punctuation.definition.parameters.begin.myst
       push:
@@ -88,6 +88,9 @@ contexts:
         - match: \)$
           scope: punctuation.definition.parameters.end.myst
           pop: true
+    - match: \bfn\b
+      scope: keyword.control.anonymous.myst
+      push: anonymous_function
     - match: ^\s*(deftype|defmodule)\W([A-Z][_a-zA-Z0-9]*)
       captures:
         1: keyword.control.type.myst
@@ -210,3 +213,10 @@ contexts:
     - match: \)\>
       scope: punctuation.section.embedded.end.myst
       pop: true
+
+  anonymous_function:
+    - meta_scope: meta.function.body.myst
+    - match: -\>
+      # TODO: This needs a better scope name
+      scope: keyword.operator.assignment.stab.myst
+    - include: main
