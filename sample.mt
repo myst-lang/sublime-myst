@@ -22,6 +22,7 @@ deftype Person
   extend Thing.Methods
 
   def foo()
+    days100per100 = 100
     raise "woops\nit broke"
   rescue msg : String
     while msg.size <= 10_000_000
