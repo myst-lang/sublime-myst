@@ -62,6 +62,10 @@ deftype Person
   def [](index); end
   def []=(index, other); end
 
+  __LINE__
+  __FILE__
+  __DIR__
+
 
   def matched(%Thing{name}, [a,b] =: foo, <(a + b)>)
     foo.map{ |_a, &block| a * 2.34 }
