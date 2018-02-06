@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: Myst
+name: Local Myst
 comment: Sublime Syntax highlighting for the Myst programming language.
 file_extensions:
   - mt
@@ -29,7 +29,7 @@ contexts:
     - match: '\b(while|until)\b'
       scope: keyword.loop.myst
       push: loop
-    - match: \b(require|include|raise)\b
+    - match: \b(require|include|extend|raise)\b
       scope: keyword.control.import.myst
     - match: \b(break|return|next)\b
       scope: keyword.control.flow.myst

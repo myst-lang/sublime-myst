@@ -19,6 +19,7 @@ deftype Person
   end
 
   include Thing.Methods
+  extend Thing.Methods
 
   def foo()
     raise "woops\nit broke"
