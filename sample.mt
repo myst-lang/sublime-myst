@@ -2,6 +2,15 @@ require "stdlib/enumerable.mt"
 
 # A Person is a collection of a name, birthday and age.
 deftype Person
+  @age_list = [1, 2, 3, 4]
+
+  @suffix_map = {
+    first: "I",
+    second: "II",
+    third: "III",
+    fourth: "IV"
+  }
+
   # Create a new Person with the same birthday and age as
   # the given Person.
   defstatic create_twin([1, 2] =: p : Person, name : String)
