@@ -33,6 +33,20 @@ deftype Person
 
   def foo()
     days100per100 = 100
+
+    func = fn
+      ->(a, *rest, [1, 2, 3] =: _ignored, &block) do
+        a + b
+        raise "no"
+      rescue str : String
+        0
+      rescue
+        nil
+      end
+
+      ->(_other) { nil }
+    end
+
     raise "woops\nit broke"
   rescue msg : String
     while msg.size <= 10_000_000

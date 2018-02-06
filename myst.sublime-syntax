@@ -84,18 +84,7 @@ contexts:
         1: keyword.control.function.myst
         2: entity.name.function.public.myst
         4: punctuation.definition.parameters.begin.myst
-      push:
-        - include: parameter
-        - meta_scope: meta.function.body.myst
-        - match: ;
-          pop: true
-        - match: $
-          pop: true
-        - match: ','
-          scope: punctuation.separator.parameter.myst
-        - match: \)$
-          scope: punctuation.definition.parameters.end.myst
-          pop: true
+      push: function_parameters
     - match: \bfn\b
       scope: keyword.control.anonymous.myst
       push: anonymous_function
@@ -158,6 +147,19 @@ contexts:
     - match: $
       pop: true
     - include: parameter
+
+  function_parameters:
+    - include: parameter
+    - meta_scope: meta.function.body.myst
+    - match: ;
+      pop: true
+    - match: $
+      pop: true
+    - match: ','
+      scope: punctuation.separator.parameter.myst
+    - match: \)$
+      scope: punctuation.definition.parameters.end.myst
+      pop: true
 
   comments:
     - match: \#.*
@@ -243,4 +245,6 @@ contexts:
     - match: -\>
       # TODO: This needs a better scope name
       scope: keyword.operator.assignment.stab.myst
+    - match: '\('
+      push: function_parameters
     - include: main
