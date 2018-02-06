@@ -9,6 +9,7 @@ first_line_match: ^#!/.*\bmyst
 scope: source.myst
 variables:
   def_op: '\!|\+|\-|\*|\/|\%|\[\]=?|==|!='
+  identifier: '([a-zA-Z][a-zA-Z0-9]*|_[a-zA-Z0-9]*)'
 contexts:
   main:
     - include: comments
@@ -119,6 +120,8 @@ contexts:
       pop: true
 
   map_literal:
+    - match: '{{identifier}}\:'
+      scope: constant.other.symbol.myst
     - include: main
     - match: '\,'
       scope: punctuation.separator

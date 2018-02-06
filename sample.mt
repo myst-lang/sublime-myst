@@ -8,7 +8,8 @@ deftype Person
     first: "I",
     second: "II",
     third: "III",
-    fourth: "IV"
+    fourth: "IV",
+    nil: "unknown"
   }
 
   # Create a new Person with the same birthday and age as
