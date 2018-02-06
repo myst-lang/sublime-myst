@@ -70,12 +70,12 @@ contexts:
       scope: variable.other.ignored.myst
     - match: \b[A-Z][_a-zA-Z0-9]*\b
       scope: variable.other.myst
-    - match: \b(def|defstatic)\W([a-z][_a-zA-Z0-9]*|{{def_op}})(\()?
+    - match: \b(def|defstatic)\W([a-z][_a-zA-Z0-9]*(!|\?)?|{{def_op}})(\()?
       scope: meta.function.identifier.myst
       captures:
         1: keyword.control.function.myst
         2: entity.name.function.public.myst
-        3: punctuation.definition.parameters.begin.myst
+        4: punctuation.definition.parameters.begin.myst
       push:
         - include: parameter
         - meta_scope: meta.function.body.myst

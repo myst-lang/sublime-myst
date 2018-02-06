@@ -47,6 +47,11 @@ deftype Person
     false
   end
 
+  def saved?; end
+  def save!; end
+  def [](index); end
+  def []=(index, other); end
+
 
   def matched(%Thing{name}, [a,b] =: foo, <(a + b)>)
     foo.map{ |_a, &block| a * 2.34 }
