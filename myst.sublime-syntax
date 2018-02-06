@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: Local Myst
+name: Myst
 comment: Sublime Syntax highlighting for the Myst programming language.
 file_extensions:
   - mt
@@ -10,6 +10,7 @@ scope: source.myst
 variables:
   def_op: '\!|\+|\-|\*|\/|\%|\[\]=?|==|!='
   identifier: '([a-zA-Z][a-zA-Z0-9]*|_[a-zA-Z0-9]*)'
+  constant: '[A-Z][_a-zA-Z0-9]*'
   magic_constants: '__LINE__|__FILE__|__DIR__'
 contexts:
   main:
@@ -88,7 +89,7 @@ contexts:
     - match: \bfn\b
       scope: keyword.control.anonymous.myst
       push: anonymous_function
-    - match: ^\s*(deftype|defmodule)\W([A-Z][_a-zA-Z0-9]*)
+    - match: ^\s*(deftype|defmodule)\W([A-Z][_a-zA-Z0-9]*)(\s\:\s ())?)
       captures:
         1: keyword.control.type.myst
         # Both `type` and `class` are added so that Sublime sees type
