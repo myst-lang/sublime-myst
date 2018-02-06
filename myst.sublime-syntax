@@ -8,7 +8,7 @@ file_extensions:
 first_line_match: ^#!/.*\bmyst
 scope: source.myst
 variables:
-  def_op: '\+|\-|\*|\/|\%|\[\]=?|==|!='
+  def_op: '\!|\+|\-|\*|\/|\%|\[\]=?|==|!='
 contexts:
   main:
     - include: comments
