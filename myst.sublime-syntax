@@ -89,7 +89,7 @@ contexts:
     - match: \bfn\b
       scope: keyword.control.anonymous.myst
       push: anonymous_function
-    - match: ^\s*(deftype|defmodule)\W([A-Z][_a-zA-Z0-9]*)(\s\:\s ())?)
+    - match: ^\s*(deftype|defmodule)\W([A-Z][_a-zA-Z0-9]*)
       captures:
         1: keyword.control.type.myst
         # Both `type` and `class` are added so that Sublime sees type
@@ -121,6 +121,8 @@ contexts:
       pop: true
 
   parameter:
+    - include: list_literal
+    - include: map_literal
     - match: '(&)[a-z][_a-zA-Z0-9]*\b'
       scope: variable.parameter.function.block.myst
       captures:

@@ -14,7 +14,7 @@ deftype Person
 
   # Create a new Person with the same birthday and age as
   # the given Person.
-  defstatic create_twin([1, 2] =: p : Person, name : String)
+  defstatic create_twin([1, *rest, 2] =: p : Person, name : String)
     %Person{name, p.birthday, p.age}
   end
 
